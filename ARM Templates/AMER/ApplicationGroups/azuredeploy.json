@@ -1,0 +1,156 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "appGroupName": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Required. Name of the AVD Application Group."
+      }
+    },
+     "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "appGroupType": {
+      "allowedValues": [
+        "RemoteApp",
+        "Desktop"
+      ],
+      "type": "string",
+      "metadata": {
+        "description": "Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop"
+      }
+    },
+    "hostpoolName": {
+      "type": "string",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Required. Name of the Host Pool to be linked to this Application Group."
+      }
+    },
+    "appGroupFriendlyName": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The friendly name of the Application Group to be created."
+      }
+    },
+    "appGroupDescription": {
+      "defaultValue": "",
+      "type": "string",
+      "metadata": {
+        "description": "Optional. The description of the Application Group to be created."
+      }
+    },
+    "workspaceResourceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resourceId of the Workspace."
+      }
+    },
+    "logAnalyticsWorkSpaceId": {
+      "type": "string",
+      "metadata": {
+        "description": "The resourceId of the logAnalyticsWorkSpace to send data to"
+      }
+    },
+      "resourceTags": {
+      "type": "object",
+      "defaultValue": {
+          "ApplicationId": "",
+          "ApplicationName": "",
+          "ApplicationOwner": "",
+          "CostCode": "",
+          "DataProfile": "",
+          "Department": "",
+          "Description": "",
+          "Entity": "",
+          "Environment": "",
+          "GLCode": "",
+          "ProjectName": "",
+          "ServiceReviewDate": ""
+      }      
+    }
+  },
+  "variables": {
+    "appGroupResourceId": "[resourceId('Microsoft.DesktopVirtualization/applicationgroups', parameters('appGroupName'))]",
+    "workspaceSubscriptionId": "[split(parameters('workspaceResourceId'), '/')[2]]",
+    "workspaceResourceGroup": "[split(parameters('workspaceResourceId'), '/')[4]]",
+    "workspaceName": "[split(parameters('workspaceResourceId'), '/')[8]]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DesktopVirtualization/applicationgroups",
+      "apiVersion": "2020-10-19-preview",
+      "name": "[parameters('appGroupName')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('resourceTags')]",
+      "properties": {
+        "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
+        "friendlyName": "[parameters('appGroupFriendlyName')]",
+        "description": "[parameters('appGroupDescription')]",
+        "applicationGroupType": "[parameters('appGroupType')]"
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-06-01",
+      "name": "[concat(parameters('hostpoolName'), '-', replace(parameters('appGroupName'), ' ', ''))]",
+      "subscriptionId": "[variables('workspaceSubscriptionId')]",
+      "resourceGroup": "[variables('workspaceResourceGroup')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.DesktopVirtualization/applicationgroups', parameters('appGroupName'))]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "type": "Microsoft.DesktopVirtualization/workspaces",
+              "apiVersion": "2020-10-19-preview",
+              "name": "[variables('workspaceName')]",
+              "location": "[parameters('location')]",
+              "condition": "[not(greater(indexOf(string(reference(resourceId(variables('workspaceSubscriptionId'), variables('workspaceResourceGroup'), 'Microsoft.DesktopVirtualization/workspaces', variables('workspaceName')),'2020-10-19-preview','Full').properties.applicationGroupReferences), variables('appGroupResourceId')),0))]",
+              "properties": {
+                "applicationGroupReferences": "[union(reference(resourceId(variables('workspaceSubscriptionId'), variables('workspaceResourceGroup'), 'Microsoft.DesktopVirtualization/workspaces', variables('workspaceName')),'2020-10-19-preview','Full').properties.applicationGroupReferences, array(variables('appGroupResourceId')))]"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.DesktopVirtualization/applicationgroups/providers/diagnosticsettings",
+      "name": "[concat(parameters('appGroupName'), '/Microsoft.Insights/service')]",
+      "apiVersion": "2017-05-01-preview",
+      "tags": "[parameters('resourceTags')]",
+      "dependson": [
+        "[resourceId('Microsoft.DesktopVirtualization/applicationgroups', parameters('appGroupName'))]"
+      ],
+      "properties": {
+        "workspaceId": "[parameters('logAnalyticsWorkSpaceId')]",
+        "logs": [
+          {
+            "category": "Checkpoint",
+            "enabled": true
+          },
+          {
+            "category": "Error",
+            "enabled": true
+          },
+          {
+            "category": "Management",
+            "enabled": true
+          }
+        ]
+      }
+    }
+  ]
+}

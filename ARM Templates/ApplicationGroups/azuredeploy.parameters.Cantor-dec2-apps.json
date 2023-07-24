@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appGroupName": {
+            "value": "UK Decoded 2 User Applications"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "appGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "uks-wvd-dec2-hp"
+        },
+        "appGroupFriendlyName": {
+            "value": "UK Decoded 2 User Applications"
+        },
+        "appGroupDescription": {
+            "value": "UK Applications for the Decoded 2 HostPool"
+        },
+        "workspaceResourceId": {
+            "value": "/subscriptions/a7b50fa6-5f5f-49b4-aa1c-128242d19284/resourceGroups/eus2-rg-wvd-services/providers/Microsoft.DesktopVirtualization/workspaces/eus2-wvd-ws-production"
+        },
+        "logAnalyticsWorkSpaceId": {
+            "value": "/subscriptions/65248a74-84e8-46d6-b373-01a13b664a20/resourcegroups/loganalytics/providers/microsoft.operationalinsights/workspaces/bgcloganalytics"
+        }
+    }
+}

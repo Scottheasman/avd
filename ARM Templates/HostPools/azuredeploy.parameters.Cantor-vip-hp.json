@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpoolName": {
+            "value": "eus2-wvd-vip-hp"
+        },
+        "hostpoolFriendlyName": {
+            "value": "Cantor VIP HostPool"
+        },
+        "hostpoolDescription": {
+            "value": "Cantor VIP HostPool"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "hostpoolType": {
+            "value": "Pooled"
+        },
+        "maxSessionLimit": {
+            "value": 15
+        },
+        "loadBalancerType": {
+            "value": "DepthFirst"
+        },
+        "validationEnvironment": {
+            "value": false
+        },
+        "workspaceResourceId": {
+            "value": "/subscriptions/a7b50fa6-5f5f-49b4-aa1c-128242d19284/resourceGroups/eus2-rg-wvd-services/providers/Microsoft.DesktopVirtualization/workspaces/eus2-wvd-ws-production"
+        },
+        "logAnalyticsWorkSpaceId": {
+            "value": "/subscriptions/65248a74-84e8-46d6-b373-01a13b664a20/resourcegroups/monitoring/providers/microsoft.operationalinsights/workspaces/bgcloganalytics"
+        }
+    }
+}

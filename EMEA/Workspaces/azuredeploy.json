@@ -1,0 +1,106 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "type": "String",
+            "metadata": {
+                "description": "The name of the workspace"
+            }
+        },
+        "workspaceDescription": {
+            "type": "String",
+            "metadata": {
+                "description": "The description of the workspace"
+            }
+        },
+        "friendlyName": {
+            "type": "String",
+            "metadata": {
+                "description": "The frindly name  of the workspace"
+            }
+        },
+        "appGroups": {
+            "defaultValue": [
+            ],
+            "type": "Array",
+            "metadata": {
+                "description": "List of applicationGroup resource Ids. Schema not defined"
+            }
+        },
+        "logAnalyticsWorkSpaceId": {
+            "type": "string",
+            "metadata": {
+                "description": "The resourceId of the logAnalyticsWorkSpace to send data to"
+            }
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "The location of the ressource."
+            }
+        },
+        "resourceTags": {
+        "type": "object",
+        "defaultValue": {
+            "ApplicationName": "",
+            "ApplicationOwner": "",
+            "CostCode": "",
+            "DataProfile": "",
+            "Department": "",
+            "Description": "",
+            "Entity": "",
+            "Environment": "",
+            "GLCode": "",
+            "ProjectName": "",
+            "ServiceReviewDate": "",
+            "AppID": ""
+        }
+    }
+  },
+    "resources": [
+        {
+            "type": "Microsoft.DesktopVirtualization/workspaces",
+            "apiVersion": "2019-12-10-preview",
+            "name": "[parameters('workspaceName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "friendlyName": "[parameters('friendlyName')]",
+                "description": "[parameters('workspaceDescription')]",
+                "applicationGroupReferences": "[parameters('appGroups')]"
+            }
+        },
+        {
+            "type": "Microsoft.DesktopVirtualization/workspaces/providers/diagnosticsettings",
+            "name": "[concat(parameters('workSpaceName'), '/Microsoft.Insights/service')]",
+            "apiVersion": "2017-05-01-preview",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[concat('Microsoft.DesktopVirtualization/workspaces/', parameters('workSpaceName'))]"
+            ],
+            "properties": {
+                "workspaceId": "[parameters('logAnalyticsWorkSpaceId')]",
+                "logs": [
+                    {
+                        "category": "Checkpoint",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Error",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Management",
+                        "enabled": true
+                    },
+                    {
+                        "category": "Feed",
+                        "enabled": true
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspaceName": {
+            "value": "eus2-wvd-ws-production"
+        },
+        "workspaceDescription": {
+            "value": "Cantor-Workspace-Production"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "friendlyName": {
+            "value": "Cantor-Workspace-production"
+        },
+        "appGroups": {
+            "value": []
+        },
+        "logAnalyticsWorkSpaceId": {
+            "value": "/subscriptions/65248a74-84e8-46d6-b373-01a13b664a20/resourcegroups/loganalytics/providers/microsoft.operationalinsights/workspaces/bgcloganalytics"
+        }
+    }
+}

@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpoolName": {
+            "value": "uks-wvd-ews-hp"
+        },
+        "vmNamePrefix": {
+            "value": "ukswvdews"
+        },
+        "vmInitialNumber": {
+            "value": 1
+        },
+        "rdshNumberOfInstances": {
+            "value": 3
+        },
+        "rdshVmSize": {
+            "value": "Standard_D4s_v3"
+        },
+        "rdshImageSource": {
+            "value": "SharedImageGallery"
+        },
+        "SharedImageGalleryResourceGroup": {
+            "value": "eus2-rg-sig"
+        },
+        "SharedImageGalleryName": {
+            "value": "eus2sig01"
+        },
+        "SharedImageGalleryVersionName": {
+            "value": "latest"
+        },
+        "SharedImageGalleryDefinitionName": {
+            "value": "eus2sigwvd20h2"
+        },
+        "subnetResourceId": {
+            "value": "/subscriptions/4fe83d79-cc9d-484f-bf8a-803ec70bac45/resourceGroups/uks-rg-wvd/providers/Microsoft.Network/virtualNetworks/uks-vn-spk-wvd/subnets/uks-vn-spk-wvd-sn1"
+        },
+        "domainToJoin": {
+            "value": "cad.local"
+        },
+        "ouPath": {
+            "value": "OU=uks-wvd-ews-hp,OU=Hostpools,OU=uks,OU=Azure WVD,DC=cad,DC=local"
+        },
+        "domainJoinUsername": {
+            "value": "ser-azurewvd"
+        },
+        "domainJoinPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/a7b50fa6-5f5f-49b4-aa1c-128242d19284/resourceGroups/eus2-rg-kv/providers/Microsoft.KeyVault/vaults/eus2-kv-hsm-1"
+                },
+                "secretName": "ser-azurewvd"
+            }
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/a7b50fa6-5f5f-49b4-aa1c-128242d19284/resourceGroups/eus2-rg-kv/providers/Microsoft.KeyVault/vaults/eus2-kv-hsm-1"
+                },
+                "secretName": "winteladm"
+            }
+        }
+    }
+}

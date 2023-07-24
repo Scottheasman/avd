@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appGroupName": {
+            "value": "EMEA Back Office User Applications"
+        },
+        "location": {
+            "value": "uksouth"
+        },
+        "appGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "uks-avd-bo-hp1"
+        },
+        "appGroupFriendlyName": {
+            "value": "EMEA Back Office User Applications"
+        },
+        "appGroupDescription": {
+            "value": "EMEA Back Office HostPool"
+        },
+        "workspaceResourceId": {
+            "value": "/subscriptions/4fe83d79-cc9d-484f-bf8a-803ec70bac45/resourceGroups/uks-rg-avd-services/providers/Microsoft.DesktopVirtualization/workspaces/uks-avd-ws-production"
+        },
+        "logAnalyticsWorkSpaceId": {
+            "value": "/subscriptions/65248a74-84e8-46d6-b373-01a13b664a20/resourcegroups/loganalytics/providers/microsoft.operationalinsights/workspaces/bgcloganalytics"
+        }
+    }
+}

@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "hostpoolName": {
+            "value": "uks-wvd-decoded-hp"
+        },
+        "hostpoolFriendlyName": {
+            "value": "Decoded HostPool"
+        },
+        "hostpoolDescription": {
+            "value": "Decoded HostPool"
+        },
+        "location": {
+            "value": "eastus2"
+        },
+        "hostpoolType": {
+            "value": "Personal"
+        },
+        "personalDesktopAssignmentType": {
+            "value": "Automatic"
+            },
+        "maxSessionLimit": {
+            "value": 20
+        },
+        "loadBalancerType": {
+            "value": "BreadthFirst"
+        },
+        "validationEnvironment": {
+            "value": false
+        },
+        "workspaceResourceId": {
+            "value": "/subscriptions/a7b50fa6-5f5f-49b4-aa1c-128242d19284/resourceGroups/eus2-rg-wvd-services/providers/Microsoft.DesktopVirtualization/workspaces/eus2-wvd-ws-production"
+        },
+        "logAnalyticsWorkSpaceId": {
+            "value": "/subscriptions/65248a74-84e8-46d6-b373-01a13b664a20/resourcegroups/loganalytics/providers/microsoft.operationalinsights/workspaces/bgcloganalytics"
+        }
+    }
+}
